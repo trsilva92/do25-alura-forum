@@ -27,14 +27,11 @@ pipeline {
             }
         }
 
-        stage("Solicitando aprovação de Deploy") {
+        stage("Inicio do build do projeto") {
             steps {
-                script {
-                     slackSend(color: "Warning", message: "Para aprovar este deploy clique aqui: ${JOB_URL} - [Janela de 5 minutos]", channel: "devops-tiago")
-                     timeout(time: 5, unit: 'MINUTES') {
-                     input(id: "Deploy Decision", message: "Deseja aprovar o deploy?", ok: "Deploy")
+                    script {
+                             slackSend(color: "Warning", message: "O build do projeto foi iniciado", channel: "devops-tiago"
                     }
-                }
             }
         }
 
@@ -42,6 +39,14 @@ pipeline {
             steps {
                 sh 'scp -o StrictHostKeyChecking=no -i /home/vagrant/devops target/alura-forum.war vagrant@192.168.50.10:/home/vagrant/alura-forum.war'
                 sh "ssh -o StrictHostKeyChecking=no -i /home/vagrant/devops vagrant@192.168.50.10 'sudo mv /home/vagrant/alura-forum.war /var/lib/tomcat8/webapps/alura-forum.war'"
+            }
+        }
+
+        stage("Fim do build do projeto") {
+            steps {
+                    script {
+                             slackSend(color: "Warning", message: "O build do projeto foi finalizado", channel: "devops-tiago"
+                    }
             }
         }
    }
