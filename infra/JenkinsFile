@@ -15,6 +15,14 @@ pipeline {
             }
         }
 
+        stage("Inicio do build do projeto") {
+             steps {
+                   script {
+                     slackSend(color: "Warning", message: "O build do projeto foi iniciado", channel: "devops-tiago")
+                   }
+             }
+        }
+
         stage("Rodar testes unitários") {
             steps {
                 sh 'mvn clean test'
@@ -24,14 +32,6 @@ pipeline {
         stage("Gerando artefato") {
             steps {
                 sh 'mvn clean package -DskipTests'
-            }
-        }
-
-        stage("Inicio do build do projeto") {
-            steps {
-                    script {
-                             slackSend(color: "Warning", message: "O build do projeto foi iniciado", channel: "devops-tiago"
-                    }
             }
         }
 
@@ -45,7 +45,7 @@ pipeline {
         stage("Fim do build do projeto") {
             steps {
                     script {
-                             slackSend(color: "Warning", message: "O build do projeto foi finalizado", channel: "devops-tiago"
+                      slackSend(color: "Warning", message: "O build do projeto foi finalizado", channel: "devops-tiago")
                     }
             }
         }
