@@ -15,19 +15,20 @@ pipeline {
             }
         }
 
-        stage("Inicio do build do projeto") {
-             steps {
-                   script {
-                     slackSend(color: "Warning", message: "O build do projeto foi iniciado", channel: "devops-tiago")
-                   }
-             }
-        }
 
         stage("Rodar testes unitários") {
             steps {
                 sh 'mvn clean test'
             }
         }
+
+         stage("Inicio do build do projeto") {
+            steps {
+                 script {
+                    slackSend(color: "Warning", message: "O build do projeto foi iniciado", channel: "devops-tiago")
+                  }
+            }
+         }
 
         stage("Gerando artefato") {
             steps {
